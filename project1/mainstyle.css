@@ -1,0 +1,517 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Prompt', sans-serif;
+}
+
+:root {
+    --primary-color: #1e3a8a;
+    --secondary-color: #3b82f6;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #cbd5e1;
+    --radius: 12px;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    min-height: 100vh;
+}
+
+
+/* หน้าลงทะเบียน */
+
+.reg-body {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.reg-card {
+    background: var(--card-bg);
+    width: 100%;
+    max-width: 450px;
+    padding: 40px 30px;
+    border-radius: var(--radius);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.brand-logo i {
+    font-size: 2.5rem;
+}
+
+.brand-logo h1 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.tagline {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 15px;
+    color: var(--text-muted);
+}
+
+.input-with-icon input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.primary-btn {
+    width: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.primary-btn:hover {
+    background-color: #1d4ed8;
+}
+
+
+/* Header ทั่วไป */
+
+.app-header {
+    background-color: var(--card-bg);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow);
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.header-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.95rem;
+}
+
+.nav-link-btn,
+.text-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nav-link-btn:hover,
+.text-btn:hover {
+    color: var(--primary-color);
+}
+
+.main-container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.welcome-banner,
+.schedule-header-banner {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 30px;
+    border-radius: var(--radius);
+    margin-bottom: 25px;
+}
+
+.card-section {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+}
+
+.card-section h3 {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.purpose-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+.purpose-card {
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.purpose-card.active {
+    border-color: var(--primary-color);
+    background: #eff6ff;
+    color: var(--primary-color);
+}
+
+.drop-zone {
+    border: 2px dashed var(--border-color);
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    background: #fafafa;
+    color: var(--text-muted);
+}
+
+.keyword-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.keyword-tag {
+    background: #eff6ff;
+    color: var(--primary-color);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85Npx;
+    border: 1px solid #bfdbfe;
+}
+
+.schedule-card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border-left: 5px solid var(--success-color);
+}
+
+.schedule-uni-info {
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.schedule-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 5px;
+}
+
+.badge {
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: #d1fae5;
+    color: #065f46;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+
+/* --- CSS เพิ่มเติมสำหรับฟีเจอร์ใหม่ใน assistant.html --- */
+
+.purpose-card {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.purpose-card.selected {
+    border-color: var(--primary-color) !important;
+    background: #eff6ff !important;
+    color: var(--primary-color) !important;
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.purpose-confirm-box {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.status-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.sub-label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-main);
+}
+
+.section-divider {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 20px 0;
+}
+
+.file-display-text {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: var(--success-color);
+    font-weight: 500;
+}
+
+.url-input-row,
+.keyword-input-row {
+    display: flex;
+    gap: 10px;
+}
+
+.text-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    font-family: 'Prompt', sans-serif;
+}
+
+.text-input:focus {
+    border-color: var(--secondary-color);
+}
+
+.url-list-ui {
+    margin-top: 10px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.url-list-ui li {
+    background: #f8fafc;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-link-btn {
+    background: none;
+    border: none;
+    color: var(--danger-color);
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.keyword-suggestions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.suggestion-chip {
+    background: #f1f5f9;
+    color: var(--text-main);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    transition: background 0.2s;
+}
+
+.suggestion-chip:hover {
+    background: #e2e8f0;
+    border-color: var(--secondary-color);
+}
+
+
+/* --- ปรับแต่งปุ่มให้ใหญ่ขึ้น สวยงาม และกดง่ายขึ้นตามคำขอ --- */
+
+
+/* 1. ปุ่มยืนยันจุดประสงค์ (ขยายให้เต็มแถบและเด่นชัดขึ้น) */
+
+.purpose-confirm-box {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.purpose-confirm-box .secondary-btn {
+    padding: 14px 20px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    /* เปลี่ยนเป็นสีหลักให้ดูเป็นปุ่มยืนยันหลัก */
+    box-shadow: 0 4px 6px -1px rgba(30, 58, 138, 0.2);
+}
+
+.purpose-confirm-box .secondary-btn:hover {
+    background-color: #1d4ed8;
+}
+
+.status-text {
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+
+/* 2. ปุ่มเพิ่มลิงก์ และ ปุ่มเพิ่มคำค้นหา (ขยายขนาดให้สูงและกดง่าย) */
+
+.url-input-row button.secondary-btn,
+.keyword-input-row button.secondary-btn {
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    white-space: nowrap;
+    cursor: pointer;
+    background-color: var(--secondary-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.url-input-row button.secondary-btn:hover,
+.keyword-input-row button.secondary-btn:hover {
+    background-color: #2563eb;
+}
+
+.url-input-row button.secondary-btn:active,
+.keyword-input-row button.secondary-btn:active {
+    transform: scale(0.98);
+}
+
+
+/* เพิ่มความสูงช่องพิมพ์ข้อความคู่กันให้สมดุลกับปุ่มขนาดใหญ่ */
+
+.text-input {
+    padding: 12px 16px;
+    font-size: 1rem;
+}
+
+
+/* --- CSS สำหรับผลลัพธ์ AI --- */
+
+.hidden {
+    display: none !important;
+}
+
+.result-content-box {
+    margin-top: 15px;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.loading-state {
+    text-align: center;
+    padding: 30px;
+    color: var(--secondary-color);
+    font-size: 1rem;
+}
+
+.loading-state i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.ai-answer-box pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Prompt', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    background: white;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    margin-top: 10px;
+}
+
+.success-result h4 {
+    color: var(--success-color);
+    margin-bottom: 10px;
+}
+
+.error-result {
+    color: var(--danger-color);
+    padding: 10px;
+}

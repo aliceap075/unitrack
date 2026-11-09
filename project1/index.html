@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniTrack AI - เริ่มต้นใช้งาน</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="mainstyle.css">
+</head>
+
+<body class="reg-body">
+
+    <div class="reg-container">
+        <div class="reg-card">
+            <div class="brand-logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <h1>UniTrack AI</h1>
+            </div>
+            <p class="tagline">เริ่มต้นวางแผนเส้นทางสู่มหาวิทยาลัยของคุณด้วยผู้ช่วย AI อัจฉริยะ ค้นหาข้อมูลประกาศรับสมัครได้อย่างแม่นยำ</p>
+
+            <!-- ใช้ form และ action เพื่อพาไปหน้า assistant.html โดยตรงด้วย HTML ล้วน -->
+            <form action="assistant.html" method="GET">
+                <div class="form-group">
+                    <label for="username">ชื่อของคุณ หรือชื่อเล่น</label>
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="username" name="name" placeholder="เช่น น้องฟ้า, ธนกร" required autocomplete="off">
+                    </div>
+                </div>
+
+                <button type="submit" class="primary-btn">
+                    <span>เริ่มต้นใช้งาน</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,255 @@
+{
+    "categories": {
+        "university_and_program": {
+            "name_th": "หมวด 1: ข้อมูลมหาวิทยาลัยและหลักสูตร",
+            "keywords": [{
+                    "primary": "มหาวิทยาลัย",
+                    "synonyms": ["สถาบันการศึกษา", "ม.", "University"],
+                    "related": ["วิทยาเขต", "สำนักวิชา"],
+                    "category": "university_and_program"
+                },
+                {
+                    "primary": "คณะ",
+                    "synonyms": ["สำนักวิชา", "Faculty", "School"],
+                    "related": ["สาขาวิชา", "ภาควิชา"],
+                    "category": "university_and_program"
+                },
+                {
+                    "primary": "สาขาวิชา",
+                    "synonyms": ["สาขา", "วิชาเอก", "แขนงวิชา", "Major", "Program"],
+                    "related": ["หลักสูตร", "รหัสหลักสูตร"],
+                    "category": "university_and_program"
+                },
+                {
+                    "primary": "ปริญญาตรี",
+                    "synonyms": ["ระดับปริญญาตรี", "Bachelor Degree", "ปริญญาตรี (ป.ตรี)"],
+                    "related": ["วุฒิการศึกษา", "ชื่อปริญญา"],
+                    "category": "university_and_program"
+                },
+                {
+                    "primary": "จำนวนรับ",
+                    "synonyms": ["รับจำนวน", "อัตราการรับ", "จำนวนที่นั่ง"],
+                    "related": ["แผนการรับสมัคร"],
+                    "category": "university_and_program"
+                }
+            ]
+        },
+        "tcas_rounds": {
+            "name_th": "หมวด 2: รอบและรูปแบบการรับสมัคร",
+            "keywords": [{
+                    "primary": "TCAS",
+                    "synonyms": ["ทปอ.", "ระบบ TCAS"],
+                    "related": ["รอบ 1", "รอบ 2", "รอบ 3", "รอบ 4"],
+                    "category": "tcas_rounds"
+                },
+                {
+                    "primary": "รอบ Portfolio",
+                    "synonyms": ["TCAS รอบ 1", "รอบ 1 Portfolio", "แฟ้มสะสมผลงาน"],
+                    "related": ["โควตา", "โครงการพิเศษ"],
+                    "category": "tcas_rounds"
+                },
+                {
+                    "primary": "รอบ Quota",
+                    "synonyms": ["TCAS รอบ 2", "รอบโควตา", "โควตาพื้นที่"],
+                    "related": ["โควตาโรงเรียน", "โควตา ภาคตะวันออก / เหนือ / ฯลฯ"],
+                    "category": "tcas_rounds"
+                },
+                {
+                    "primary": "รอบ Admission",
+                    "synonyms": ["TCAS รอบ 3", "รอบแอดมิชชั่น", "Admission"],
+                    "related": ["คะแนนสอบกลาง", "GPAX"],
+                    "category": "tcas_rounds"
+                },
+                {
+                    "primary": "รอบ Direct Admission",
+                    "synonyms": ["TCAS รอบ 4", "รอบรับตรงอิสระ", "รับตรงอิสระ"],
+                    "related": ["การรับสมัครเพิ่มเติม"],
+                    "category": "tcas_rounds"
+                }
+            ]
+        },
+        "qualifications": {
+            "name_th": "หมวด 3: คุณสมบัติและเงื่อนไขผู้สมัคร",
+            "keywords": [{
+                    "primary": "GPAX",
+                    "synonyms": ["GPA", "เกรดเฉลี่ยสะสม", "ผลการเรียนเฉลี่ยสะสม", "เกรดเฉลี่ยรวม"],
+                    "related": ["หน่วยกิต", "ผลการเรียน"],
+                    "category": "qualifications"
+                },
+                {
+                    "primary": "วุฒิการศึกษา",
+                    "synonyms": ["คุณสมบัติด้านวุฒิ", "การศึกษาขั้นต่ำ", "ม.6", "ปวช."],
+                    "related": ["แผนการเรียน", "สายวิทยาศาสตร์และคณิตศาสตร์", "สายศิลป์"],
+                    "category": "qualifications"
+                },
+                {
+                    "primary": "คุณสมบัติผู้สมัคร",
+                    "synonyms": ["เงื่อนไขการสมัคร", "คุณสมบัติเฉพาะ", "เกณฑ์คุณสมบัติ"],
+                    "related": ["สัญชาติ", "อายุ", "สถานภาพนักเรียน"],
+                    "category": "qualifications"
+                }
+            ]
+        },
+        "exams_and_scores": {
+            "name_th": "หมวด 4: คะแนนสอบและเกณฑ์การคัดเลือก",
+            "keywords": [{
+                    "primary": "TGAT",
+                    "synonyms": ["ทีแกท", "TGAT1", "TGAT2", "TGAT3"],
+                    "related": ["TPAT", "A-Level"],
+                    "category": "exams_and_scores"
+                },
+                {
+                    "primary": "TPAT",
+                    "synonyms": ["ทีแพท", "TPAT1", "TPAT2", "TPAT3", "TPAT4", "TPAT5"],
+                    "related": ["ความถนัดทางวิชาชีพ", "ความถนัดเฉพาะ"],
+                    "category": "exams_and_scores"
+                },
+                {
+                    "primary": "A-Level",
+                    "synonyms": ["Applied Knowledge Level", "สามัญ", "วิชาสามัญ"],
+                    "related": ["คะแนนสอบกลาง", "คะแนนขั้นต่ำ"],
+                    "category": "exams_and_scores"
+                },
+                {
+                    "primary": "คะแนนภาษาอังกฤษ",
+                    "synonyms": ["IELTS", "TOEFL", "TOEIC", "CU-TEP", "TU-GET"],
+                    "related": ["เกณฑ์คะแนนภาษา", "คะแนนขั้นต่ำ"],
+                    "category": "exams_and_scores"
+                }
+            ]
+        },
+        "portfolio_and_works": {
+            "name_th": "หมวด 5: Portfolio และผลงาน",
+            "keywords": [{
+                    "primary": "Portfolio",
+                    "synonyms": ["แฟ้มสะสมผลงาน", "แฟ้มผลงาน", "พอร์ต"],
+                    "related": ["จำนวนหน้า", "รูปแบบแฟ้ม", "SOP", "Personal Statement"],
+                    "category": "portfolio_and_works"
+                },
+                {
+                    "primary": "เกียรติบัตร",
+                    "synonyms": ["ใบประกาศนียบัตร", "Certificate", "รางวัล"],
+                    "related": ["ผลงานระดับโรงเรียน", "ระดับประเทศ", "ระดับนานาชาติ"],
+                    "category": "portfolio_and_works"
+                },
+                {
+                    "primary": "โครงงาน",
+                    "synonyms": ["ผลงานทางวิชาการ", "นวัตกรรม", "สิ่งประดิษฐ์", "Project"],
+                    "related": ["โครงงานวิทยาศาสตร์", "โครงงานคอมพิวเตอร์"],
+                    "category": "portfolio_and_works"
+                }
+            ]
+        },
+        "documents": {
+            "name_th": "หมวด 6: เอกสารประกอบการสมัคร",
+            "keywords": [{
+                    "primary": "Transcript",
+                    "synonyms": ["ใบแสดงผลการเรียน", "ปพ.1", "ระเบียนสะสมผลการเรียน"],
+                    "related": ["ปพ.7", "ใบรับรองการศึกษา"],
+                    "category": "documents"
+                },
+                {
+                    "primary": "สำเนาบัตรประชาชน",
+                    "synonyms": ["บัตรประจำตัวประชาชน", "สำเนาบัตร"],
+                    "related": ["ทะเบียนบ้าน", "สำเนาทะเบียนบ้าน"],
+                    "category": "documents"
+                },
+                {
+                    "primary": "ใบรับรองแพทย์",
+                    "synonyms": ["ใบตรวจสุขภาพ", "เอกสารรับรองสุขภาพ"],
+                    "related": ["คุณสมบัติด้านสุขภาพ"],
+                    "category": "documents"
+                }
+            ]
+        },
+        "scholarships": {
+            "name_th": "หมวด 7: ทุนการศึกษา",
+            "keywords": [{
+                    "primary": "ทุนการศึกษา",
+                    "synonyms": ["Scholarship", "ทุนสนับสนุนการศึกษา", "ทุนเรียนดี"],
+                    "related": ["ทุนเต็มจำนวน", "ทุนบางส่วน", "ทุนขาดแคลนทุนทรัพย์"],
+                    "category": "scholarships"
+                },
+                {
+                    "primary": "เงื่อนไขทุน",
+                    "synonyms": ["คุณสมบัติผู้รับทุน", "การรักษาสถานภาพทุน"],
+                    "related": ["มูลค่าทุน", "จำนวนเงินทุน"],
+                    "category": "scholarships"
+                }
+            ]
+        },
+        "schedule": {
+            "name_th": "หมวด 8: กำหนดการและวันสำคัญ",
+            "keywords": [{
+                    "primary": "วันรับสมัคร",
+                    "synonyms": ["วันเปิดรับสมัคร", "วันปิดรับสมัคร", "ช่วงเวลาการสมัคร", "กำหนดการรับสมัคร"],
+                    "related": ["วันชำระเงิน", "วันประกาศผล"],
+                    "category": "schedule"
+                },
+                {
+                    "primary": "วันประกาศผล",
+                    "synonyms": ["วันประกาศรายชื่อ", "วันสอบสัมภาษณ์", "ประกาศผู้มีสิทธิ์สอบ"],
+                    "related": ["วันยืนยันสิทธิ์", "วันสละสิทธิ์", "วันรายงานตัว"],
+                    "category": "schedule"
+                }
+            ]
+        },
+        "selection_process": {
+            "name_th": "หมวด 9: ขั้นตอนการคัดเลือกและสัมภาษณ์",
+            "keywords": [{
+                    "primary": "สอบสัมภาษณ์",
+                    "synonyms": ["การสอบสัมภาษณ์", "สัมภาษณ์ออนไลน์", "สัมภาษณ์ onsite"],
+                    "related": ["ผู้มีสิทธิ์สัมภาษณ์", "การประเมิน Portfolio"],
+                    "category": "selection_process"
+                },
+                {
+                    "primary": "ยืนยันสิทธิ์",
+                    "synonyms": ["การยืนยันสิทธิ์ clearing house", "สละสิทธิ์", "รายงานตัว"],
+                    "related": ["ผู้ผ่านการคัดเลือก", "ผู้มีสิทธิ์เข้าศึกษา"],
+                    "category": "selection_process"
+                }
+            ]
+        },
+        "fees": {
+            "name_th": "หมวด 10: ค่าใช้จ่ายและค่าธรรมเนียม",
+            "keywords": [{
+                "primary": "ค่าเล่าเรียน",
+                "synonyms": ["ค่าเทอม", "ค่าธรรมเนียมการศึกษา", "ค่าใช้จ่ายต่อภาคเรียน"],
+                "related": ["ค่าสมัคร", "ค่าธรรมเนียมสมัคร", "ค่าขึ้นทะเบียน"],
+                "category": "fees"
+            }]
+        },
+        "conditions_and_logic": {
+            "name_th": "หมวด 11: คำบอกเงื่อนไขและคำเชื่อม",
+            "keywords": [{
+                    "primary": "ไม่น้อยกว่า",
+                    "synonyms": ["ไม่ต่ำกว่า", "อย่างน้อย", "ตั้งแต่"],
+                    "related": ["มากกว่า", "เท่ากับ"],
+                    "category": "conditions_and_logic"
+                },
+                {
+                    "primary": "ไม่เกิน",
+                    "synonyms": ["สูงสุด", "ไม่มากกว่า"],
+                    "related": ["น้อยกว่า"],
+                    "category": "conditions_and_logic"
+                }
+            ]
+        },
+        "formats_and_units": {
+            "name_th": "หมวด 12: รูปแบบวันที่ ตัวเลข และหน่วย",
+            "keywords": [{
+                    "primary": "ปี พ.ศ.",
+                    "synonyms": ["พุทธศักราช", "ค.ศ.", "ปีการศึกษา"],
+                    "related": ["รูปแบบวันที่ภาษาไทย", "รูปแบบช่วงวันที่"],
+                    "category": "formats_and_units"
+                },
+                {
+                    "primary": "หน่วยกิต",
+                    "synonyms": ["หน่วยการศึกษา", "Credit"],
+                    "related": ["คะแนนร้อยละ", "คะแนนทศนิยม"],
+                    "category": "formats_and_units"
+                }
+            ]
+        }
+    }
+}

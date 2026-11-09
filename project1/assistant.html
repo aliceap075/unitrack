@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniTrack AI - ผู้ช่วยอัจฉริยะ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="mainstyle.css">
+    <style>
+        /* สไตล์เพิ่มเติมสำหรับระบบ Tag และหมวดหมู่คำค้นหา */
+        
+        .category-suggestions {
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .category-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 6px;
+        }
+        
+        .keyword-chip-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        
+        .suggestion-chip {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .suggestion-chip:hover {
+            background-color: #e2e8f0;
+            border-color: #94a3b8;
+        }
+        
+        .keyword-tag {
+            display: inline-flex;
+            align-items: center;
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin: 4px;
+        }
+        
+        .keyword-tag i {
+            margin-left: 6px;
+            cursor: pointer;
+        }
+        
+        .file-info-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin-top: 10px;
+        }
+        
+        .file-actions button {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        /* สไตล์เพิ่มเติมสำหรับบล็อกเลือก คณะ/สาขา/มหาวิทยาลัย */
+        
+        .target-uni-box {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .target-field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .target-field-group label {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-color);
+        }
+        
+        .input-with-button {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .input-with-button input {
+            flex: 1;
+        }
+        
+        .dropdown-list-container {
+            display: none;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 5px;
+            margin-top: 5px;
+        }
+        
+        .dropdown-item {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        .dropdown-item:hover {
+            background: #e2e8f0;
+        }
+        /* ตกแต่งผลลัพธ์จาก AI ให้สวยงาม อ่านง่าย สบายตา มีลูกเล่น */
+        
+        .success-result {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 5px;
+        }
+        
+        .ai-result-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #4f46e5, #3b82f6);
+            color: #ffffff;
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+        
+        .ai-result-header i {
+            font-size: 1.3rem;
+        }
+        
+        .ai-answer-box {
+            background: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+            border-left: 5px solid #3b82f6 !important;
+            padding: 20px !important;
+            border-radius: 8px !important;
+            font-family: 'Prompt', sans-serif !important;
+            font-size: 0.95rem !important;
+            line-height: 1.7 !important;
+            color: #1e293b !important;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .ai-answer-box h3,
+        .ai-answer-box h4 {
+            color: #1e3a8a;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .ai-answer-box ul {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .ai-answer-box li {
+            margin-bottom: 6px;
+        }
+        
+        .error-result {
+            background: #fef2f2;
+            border: 1px solid #fee2e2;
+            padding: 18px;
+            border-radius: 10px;
+            border-left: 5px solid #ef4444;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header (เอาปุ่มตารางกำหนดการออกแล้ว) -->
+    <header class="app-header">
+        <div class="header-brand">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>UniTrack AI</span>
+        </div>
+        <div class="header-nav-actions">
+            <span id="display-name">สวัสดี, ผู้ใช้งาน</span>
+            <a href="index.html" class="text-btn" title="เปลี่ยนชื่อ">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <div class="welcome-banner">
+            <h2>ให้ UniTrack AI ช่วยค้นหาและจัดการข้อมูลการสมัครมหาวิทยาลัยของคุณ</h2>
+            <p>ระบุเป้าหมายคณะ/มหาวิทยาลัย เลือกจุดประสงค์ แนบระเบียบการ และกำหนดคำค้นหาเพื่อเริ่มวิเคราะห์</p>
+        </div>
+
+        <!-- บล็อกเลือกมหาวิทยาลัย คณะ และสาขาวิชา -->
+        <div class="card-section" style="border: 2px solid var(--primary-color, #3b82f6); background: #fafafa;">
+            <h3><i class="fa-solid fa-bullseye" style="color: var(--primary-color);"></i> 1. ระบุเป้าหมาย (มหาวิทยาลัย / คณะ / สาขา)</h3>
+            <p class="section-desc">คลิกปุ่มเพื่อเลือกจากรายการ หรือพิมพ์ระบุข้อมูลเป้าหมายของคุณเองได้เลย:</p>
+
+            <div class="target-uni-box">
+                <!-- มหาวิทยาลัย -->
+                <div class="target-field-group">
+                    <label><i class="fa-solid fa-university"></i> มหาวิทยาลัยเป้าหมาย</label>
+                    <div class="input-with-button">
+                        <input type="text" id="target-uni-input" placeholder="เลือกจากรายการ หรือพิมพ์ชื่อมหาวิทยาลัย..." class="text-input">
+                        <button type="button" class="secondary-btn" onclick="toggleDropdown('uni-dropdown')"><i class="fa-solid fa-caret-down"></i> เลือก</button>
+                    </div>
+                    <div id="uni-dropdown" class="dropdown-list-container">
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'จุฬาลงกรณ์มหาวิทยาลัย', 'uni-dropdown')">จุฬาลงกรณ์มหาวิทยาลัย</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยมหิดล', 'uni-dropdown')">มหาวิทยาลัยมหิดล</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยธรรมศาสตร์', 'uni-dropdown')">มหาวิทยาลัยธรรมศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยเกษตรศาสตร์', 'uni-dropdown')">มหาวิทยาลัยเกษตรศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยเชียงใหม่', 'uni-dropdown')">มหาวิทยาลัยเชียงใหม่</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยขอนแก่น', 'uni-dropdown')">มหาวิทยาลัยขอนแก่น</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยสงขลานครินทร์', 'uni-dropdown')">มหาวิทยาลัยสงขลานครินทร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยบูรพา', 'uni-dropdown')">มหาวิทยาลัยบูรพา</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยศิลปากร', 'uni-dropdown')">มหาวิทยาลัยศิลปากร</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยศรีนครินทรวิโรฒ', 'uni-dropdown')">มหาวิทยาลัยศรีนครินทรวิโรฒ</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยนเรศวร', 'uni-dropdown')">มหาวิทยาลัยนเรศวร</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยแม่ฟ้าหลวง', 'uni-dropdown')">มหาวิทยาลัยแม่ฟ้าหลวง</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยเทคโนโลยีสุรนารี', 'uni-dropdown')">มหาวิทยาลัยเทคโนโลยีสุรนารี</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยวลัยลักษณ์', 'uni-dropdown')">มหาวิทยาลัยวลัยลักษณ์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยพะเยา', 'uni-dropdown')">มหาวิทยาลัยพะเยา</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี', 'uni-dropdown')">มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ', 'uni-dropdown')">มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง', 'uni-dropdown')">สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยกรุงเทพ', 'uni-dropdown')">มหาวิทยาลัยกรุงเทพ</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยรังสิต', 'uni-dropdown')">มหาวิทยาลัยรังสิต</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยศรีปทุม', 'uni-dropdown')">มหาวิทยาลัยศรีปทุม</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยหอการค้าไทย', 'uni-dropdown')">มหาวิทยาลัยหอการค้าไทย</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยอัสสัมชัญ', 'uni-dropdown')">มหาวิทยาลัยอัสสัมชัญ</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยธุรกิจบัณฑิตย์', 'uni-dropdown')">มหาวิทยาลัยธุรกิจบัณฑิตย์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-uni-input', 'มหาวิทยาลัยสยาม', 'uni-dropdown')">มหาวิทยาลัยสยาม</div>
+                    </div>
+                </div>
+
+                <!-- คณะ -->
+                <div class="target-field-group">
+                    <label><i class="fa-solid fa-building-columns"></i> คณะ</label>
+                    <div class="input-with-button">
+                        <input type="text" id="target-faculty-input" placeholder="เลือกจากรายการ หรือพิมพ์ชื่อคณะ..." class="text-input">
+                        <button type="button" class="secondary-btn" onclick="toggleDropdown('faculty-dropdown')"><i class="fa-solid fa-caret-down"></i> เลือก</button>
+                    </div>
+                    <div id="faculty-dropdown" class="dropdown-list-container">
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะแพทยศาสตร์', 'faculty-dropdown')">คณะแพทยศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะทันตแพทยศาสตร์', 'faculty-dropdown')">คณะทันตแพทยศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะเภสัชศาสตร์', 'faculty-dropdown')">คณะเภสัชศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะพยาบาลศาสตร์', 'faculty-dropdown')">คณะพยาบาลศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะสัตวแพทยศาสตร์', 'faculty-dropdown')">คณะสัตวแพทยศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะวิศวกรรมศาสตร์', 'faculty-dropdown')">คณะวิศวกรรมศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะวิทยาศาสตร์', 'faculty-dropdown')">คณะวิทยาศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะเทคโนโลยีสารสนเทศ', 'faculty-dropdown')">คณะเทคโนโลยีสารสนเทศ</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะวิทยาการคอมพิวเตอร์', 'faculty-dropdown')">คณะวิทยาการคอมพิวเตอร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะบริหารธุรกิจ', 'faculty-dropdown')">คณะบริหารธุรกิจ</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะพาณิชยศาสตร์และการบัญชี', 'faculty-dropdown')">คณะพาณิชยศาสตร์และการบัญชี</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะเศรษฐศาสตร์', 'faculty-dropdown')">คณะเศรษฐศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะนิติศาสตร์', 'faculty-dropdown')">คณะนิติศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะรัฐศาสตร์', 'faculty-dropdown')">คณะรัฐศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะนิเทศศาสตร์', 'faculty-dropdown')">คณะนิเทศศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะวารสารศาสตร์และสื่อสารมวลชน', 'faculty-dropdown')">คณะวารสารศาสตร์และสื่อสารมวลชน</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะมนุษยศาสตร์', 'faculty-dropdown')">คณะมนุษยศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะศิลปศาสตร์', 'faculty-dropdown')">คณะศิลปศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะศึกษาศาสตร์', 'faculty-dropdown')">คณะศึกษาศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะครุศาสตร์', 'faculty-dropdown')">คณะครุศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะสถาปัตยกรรมศาสตร์', 'faculty-dropdown')">คณะสถาปัตยกรรมศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะศิลปกรรมศาสตร์', 'faculty-dropdown')">คณะศิลปกรรมศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะจิตวิทยา', 'faculty-dropdown')">คณะจิตวิทยา</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะสาธารณสุขศาสตร์', 'faculty-dropdown')">คณะสาธารณสุขศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะเทคนิคการแพทย์', 'faculty-dropdown')">คณะเทคนิคการแพทย์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะกายภาพบำบัด', 'faculty-dropdown')">คณะกายภาพบำบัด</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะเกษตรศาสตร์', 'faculty-dropdown')">คณะเกษตรศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะประมง', 'faculty-dropdown')">คณะประมง</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะวนศาสตร์', 'faculty-dropdown')">คณะวนศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะอุตสาหกรรมเกษตร', 'faculty-dropdown')">คณะอุตสาหกรรมเกษตร</div>
+                        <div class="dropdown-item" onclick="selectItem('target-faculty-input', 'คณะการท่องเที่ยวและการโรงแรม', 'faculty-dropdown')">คณะการท่องเที่ยวและการโรงแรม</div>
+                    </div>
+                </div>
+
+                <!-- สาขา -->
+                <div class="target-field-group">
+                    <label><i class="fa-solid fa-book"></i> สาขาวิชา</label>
+                    <div class="input-with-button">
+                        <input type="text" id="target-major-input" placeholder="เลือกจากรายการ หรือพิมพ์ชื่อสาขาวิชา..." class="text-input">
+                        <button type="button" class="secondary-btn" onclick="toggleDropdown('major-dropdown')"><i class="fa-solid fa-caret-down"></i> เลือก</button>
+                    </div>
+                    <div id="major-dropdown" class="dropdown-list-container">
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'แพทยศาสตร์', 'major-dropdown')">แพทยศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'ทันตแพทยศาสตร์', 'major-dropdown')">ทันตแพทยศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'เภสัชศาสตร์', 'major-dropdown')">เภสัชศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'พยาบาลศาสตร์', 'major-dropdown')">พยาบาลศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'เทคนิคการแพทย์', 'major-dropdown')">เทคนิคการแพทย์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'กายภาพบำบัด', 'major-dropdown')">กายภาพบำบัด</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'สัตวแพทยศาสตร์', 'major-dropdown')">สัตวแพทยศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'สาธารณสุขศาสตร์', 'major-dropdown')">สาธารณสุขศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'วิศวกรรมคอมพิวเตอร์', 'major-dropdown')">วิศวกรรมคอมพิวเตอร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'วิศวกรรมซอฟต์แวร์', 'major-dropdown')">วิศวกรรมซอฟต์แวร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'วิศวกรรมไฟฟ้า', 'major-dropdown')">วิศวกรรมไฟฟ้า</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'วิศวกรรมเครื่องกล', 'major-dropdown')">วิศวกรรมเครื่องกล</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'วิศวกรรมโยธา', 'major-dropdown')">วิศวกรรมโยธา</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'วิศวกรรมอุตสาหการ', 'major-dropdown')">วิศวกรรมอุตสาหการ</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'วิทยาการคอมพิวเตอร์', 'major-dropdown')">วิทยาการคอมพิวเตอร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'เทคโนโลยีสารสนเทศ', 'major-dropdown')">เทคโนโลยีสารสนเทศ</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'ปัญญาประดิษฐ์', 'major-dropdown')">ปัญญาประดิษฐ์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'วิทยาการข้อมูล', 'major-dropdown')">วิทยาการข้อมูล</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'ความมั่นคงปลอดภัยไซเบอร์', 'major-dropdown')">ความมั่นคงปลอดภัยไซเบอร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'เทคโนโลยีดิจิทัล', 'major-dropdown')">เทคโนโลยีดิจิทัล</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'บริหารธุรกิจ', 'major-dropdown')">บริหารธุรกิจ</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'การบัญชี', 'major-dropdown')">การบัญชี</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'การตลาด', 'major-dropdown')">การตลาด</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'การเงิน', 'major-dropdown')">การเงิน</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'เศรษฐศาสตร์', 'major-dropdown')">เศรษฐศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'นิติศาสตร์', 'major-dropdown')">นิติศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'รัฐศาสตร์', 'major-dropdown')">รัฐศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'ความสัมพันธ์ระหว่างประเทศ', 'major-dropdown')">ความสัมพันธ์ระหว่างประเทศ</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'จิตวิทยา', 'major-dropdown')">จิตวิทยา</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'นิเทศศาสตร์', 'major-dropdown')">นิเทศศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'สถาปัตยกรรม', 'major-dropdown')">สถาปัตยกรรม</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'ออกแบบกราฟิก', 'major-dropdown')">ออกแบบกราฟิก</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'แอนิเมชัน', 'major-dropdown')">แอนิเมชัน</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'ภาพยนตร์และสื่อดิจิทัล', 'major-dropdown')">ภาพยนตร์และสื่อดิจิทัล</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'ภาษาอังกฤษ', 'major-dropdown')">ภาษาอังกฤษ</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'ภาษาจีน', 'major-dropdown')">ภาษาจีน</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'ภาษาญี่ปุ่น', 'major-dropdown')">ภาษาญี่ปุ่น</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'ภาษาเกาหลี', 'major-dropdown')">ภาษาเกาหลี</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'การท่องเที่ยว', 'major-dropdown')">การท่องเที่ยว</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'การโรงแรม', 'major-dropdown')">การโรงแรม</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'โลจิสติกส์', 'major-dropdown')">โลจิสติกส์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'การจัดการธุรกิจระหว่างประเทศ', 'major-dropdown')">การจัดการธุรกิจระหว่างประเทศ</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'เทคโนโลยีอาหาร', 'major-dropdown')">เทคโนโลยีอาหาร</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'เกษตรศาสตร์', 'major-dropdown')">เกษตรศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'สัตวศาสตร์', 'major-dropdown')">สัตวศาสตร์</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'วิทยาศาสตร์สิ่งแวดล้อม', 'major-dropdown')">วิทยาศาสตร์สิ่งแวดล้อม</div>
+                        <div class="dropdown-item" onclick="selectItem('target-major-input', 'คณิตศาสตร์', 'major-dropdown')">คณิตศาสตร์</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 1. ส่วนเลือกจุดประสงค์ -->
+        <div class="card-section">
+            <h3><i class="fa-solid fa-bullseye"></i> 2. เลือกจุดประสงค์ในการค้นหา (เลือกได้มากกว่า 1)</h3>
+            <div class="purpose-grid" id="purpose-grid">
+                <div class="purpose-card" data-purpose="ข้อมูลการสมัครและรอบ Portfolio" onclick="togglePurpose(this)">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span>ข้อมูลการสมัครและรอบ Portfolio</span>
+                </div>
+                <div class="purpose-card" data-purpose="เกณฑ์การคัดเลือกและคะแนน" onclick="togglePurpose(this)">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>เกณฑ์การคัดเลือกและคะแนน</span>
+                </div>
+                <div class="purpose-card" data-purpose="การจัดทำ Portfolio" onclick="togglePurpose(this)">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>การจัดทำ Portfolio</span>
+                </div>
+                <div class="purpose-card" data-purpose="ทุนการศึกษา" onclick="togglePurpose(this)">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>ทุนการศึกษา</span>
+                </div>
+                <div class="purpose-card" data-purpose="คุณสมบัติและเอกสารประกอบการสมัคร" onclick="togglePurpose(this)">
+                    <i class="fa-solid fa-id-card"></i>
+                    <span>คุณสมบัติและเอกสารประกอบการสมัคร</span>
+                </div>
+                <div class="purpose-card" data-purpose="กำหนดการและวันสำคัญ" onclick="togglePurpose(this)">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>กำหนดการและวันสำคัญ</span>
+                </div>
+            </div>
+            <div class="purpose-confirm-box">
+                <button type="button" class="secondary-btn" onclick="confirmPurposes()">ยืนยันจุดประสงค์ที่เลือก</button>
+                <span id="selected-purpose-status" class="status-text">ยังไม่ได้เลือกจุดประสงค์</span>
+            </div>
+        </div>
+
+        <!-- 2. ระบบเอกสารและลิงก์ URL -->
+        <div class="card-section">
+            <h3><i class="fa-solid fa-folder-open"></i> 3. เพิ่มเอกสารประกาศรับสมัคร หรือ ลิงก์เว็บไซต์</h3>
+
+            <div class="sub-section">
+                <label class="sub-label"><i class="fa-solid fa-file-pdf"></i> อัปโหลดไฟล์ PDF</label>
+                <div class="drop-zone" onclick="document.getElementById('pdf-input').click()">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <p>คลิกเพื่อเลือกไฟล์ PDF ประกาศรับสมัครมหาวิทยาลัย</p>
+                    <input type="file" id="pdf-input" accept=".pdf" style="display: none;" onchange="handleFileSelect(this)">
+                </div>
+                <div id="file-display-container"></div>
+            </div>
+
+            <hr class="section-divider">
+
+            <div class="sub-section" style="margin-top: 15px;">
+                <label class="sub-label"><i class="fa-solid fa-link"></i> หรือใส่ลิงก์เว็บไซต์ประกาศ</label>
+                <div class="url-input-row">
+                    <input type="url" id="url-input-field" placeholder="https://example.ac.th/admission" class="text-input">
+                    <button type="button" class="secondary-btn" onclick="addUrlLink()">เพิ่มลิงก์</button>
+                </div>
+                <ul id="url-list-container" class="url-list-ui"></ul>
+            </div>
+        </div>
+
+        <!-- 3. ส่วนกำหนด Keyword แยกหมวดหมู่ + คำพ้องความหมาย + อย่างน้อย 3 คำ -->
+        <div class="card-section">
+            <h3><i class="fa-solid fa-tags"></i> 4. กำหนดคำค้นหา (ต้องมีอย่างน้อย 3 คำ)</h3>
+            <p class="section-desc">ระบบจะแนะนำ Keyword และคำพ้องความหมายตามหมวดหมู่ที่คุณเลือกด้านบน หรือสามารถพิมพ์เพิ่มเองได้:</p>
+
+            <div id="auto-keyword-suggestions"></div>
+
+            <div class="keyword-input-row" style="margin-top: 12px;">
+                <input type="text" id="keyword-text-input" placeholder="พิมพ์คำค้นหา หรือคำพ้องความหมาย (เช่น GPAX, GPA, เกรดเฉลี่ยสะสม)..." class="text-input">
+                <button type="button" class="secondary-btn" onclick="addKeywordToList()">เพิ่มคำค้นหา</button>
+            </div>
+
+            <div id="keyword-tags-container" class="keyword-tags" style="margin-top: 12px;"></div>
+            <p id="keyword-count-status" style="font-size: 0.85rem; color: var(--danger-color); margin-top: 5px;">*คุณยังเพิ่มคำค้นหาไม่ครบ 3 คำ</p>
+        </div>
+
+        <!-- 4. ส่วนแสดงผลลัพธ์จาก AI -->
+        <div id="result-section" class="card-section hidden">
+            <h3><i class="fa-solid fa-square-poll-vertical"></i> ผลการวิเคราะห์จาก AI</h3>
+            <div id="result-content" class="result-content-box"></div>
+        </div>
+
+        <div class="action-section">
+            <button class="primary-btn large-btn" onclick="startAnalysis()">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>เริ่มวิเคราะห์เอกสารด้วย AI</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- JavaScript ควบคุมการทำงานทั้งหมด -->
+    <script>
+        // ดึงชื่อผู้ใช้จาก URL มาแสดง
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name');
+        if (name) {
+            document.getElementById('display-name').textContent = `สวัสดี, ${name}`;
+        }
+
+        // ฟังก์ชันเปิด-ปิด Dropdown สำหรับเลือกเป้าหมาย
+        function toggleDropdown(dropdownId) {
+            const dropdowns = document.querySelectorAll('.dropdown-list-container');
+            dropdowns.forEach(d => {
+                if (d.id !== dropdownId) d.style.display = 'none';
+            });
+            const target = document.getElementById(dropdownId);
+            target.style.display = target.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // ฟังก์ชันเลือกรายการจาก Dropdown ไปใส่ใน Input
+        function selectItem(inputId, value, dropdownId) {
+            document.getElementById(inputId).value = value;
+            document.getElementById(dropdownId).style.display = 'none';
+        }
+
+        // คลิกนอก Dropdown เพื่อปิด
+        window.onclick = function(event) {
+            if (!event.target.matches('.secondary-btn') && !event.target.closest('.input-with-button')) {
+                document.querySelectorAll('.dropdown-list-container').forEach(d => {
+                    d.style.display = 'none';
+                });
+            }
+        }
+
+        // ฐานข้อมูลคำค้นหาและคำพ้องความหมาย (Synonyms Dictionary)
+        const keywordDatabase = {
+            "ข้อมูลการสมัครและรอบ Portfolio": {
+                name: "ข้อมูลการสมัครและรอบ Portfolio",
+                keywords: ["รอบ Portfolio", "TCAS รอบ 1", "คุณสมบัติผู้สมัคร", "จำนวนรับสมัคร"],
+                synonyms: ["แฟ้มสะสมผลงาน", "พอร์ต", "รอบ 1", "ทปอ."]
+            },
+            "เกณฑ์การคัดเลือกและคะแนน": {
+                name: "เกณฑ์การคัดเลือกและคะแนน",
+                keywords: ["GPAX", "GPA", "เกรดเฉลี่ยสะสม", "คะแนน TGAT", "คะแนน TPAT", "A-Level"],
+                synonyms: ["ผลการเรียนเฉลี่ย", "หน่วยกิต", "ทีแกท", "ทีแพท", "วิชาสามัญ"]
+            },
+            "การจัดทำ Portfolio": {
+                name: "การจัดทำ Portfolio",
+                keywords: ["รูปแบบ Portfolio", "จำนวนหน้า", "ผลงานเด่น", "เกียรติบัตร"],
+                synonyms: ["ใบประกาศนียบัตร", "SOP", "Personal Statement", "ผลงานทางวิชาการ"]
+            },
+            "ทุนการศึกษา": {
+                name: "ทุนการศึกษา",
+                keywords: ["ทุนการศึกษา", "ทุนเรียนดี", "ทุนฟรีค่าเทอม", "เงื่อนไขทุน"],
+                synonyms: ["Scholarship", "ทุนสนับสนุนการศึกษา", "ทุนเต็มจำนวน", "ทุนบางส่วน"]
+            },
+            "คุณสมบัติและเอกสารประกอบการสมัคร": {
+                name: "คุณสมบัติและเอกสารประกอบการสมัคร",
+                keywords: ["สำเนาทะเบียนบ้าน", "ใบ ปพ.1", "ใบรับรองแพทย์", "รูปถ่ายหน้าตรง"],
+                synonyms: ["Transcript", "ปพ.7", "บัตรประชาชน", "ใบแสดงผลการเรียน"]
+            },
+            "กำหนดการและวันสำคัญ": {
+                name: "กำหนดการและวันสำคัญ",
+                keywords: ["วันเปิดรับสมัคร", "วันปิดรับสมัคร", "วันประกาศผล", "วันสอบสัมภาษณ์"],
+                synonyms: ["กำหนดการรับสมัคร", "วันรายงานตัว", "วันยืนยันสิทธิ์", "วันสอบข้อเขียน"]
+            }
+        };
+
+        // 1. ระบบเลือกจุดประสงค์
+        let selectedPurposes = [];
+
+        function togglePurpose(card) {
+            card.classList.toggle('selected');
+            const purpose = card.getAttribute('data-purpose');
+
+            if (selectedPurposes.includes(purpose)) {
+                selectedPurposes = selectedPurposes.filter(p => p !== purpose);
+            } else {
+                selectedPurposes.push(purpose);
+            }
+            updateKeywordSuggestions();
+        }
+
+        function confirmPurposes() {
+            const statusText = document.getElementById('selected-purpose-status');
+            if (selectedPurposes.length === 0) {
+                statusText.textContent = "กรุณาเลือกอย่างน้อย 1 จุดประสงค์";
+                statusText.style.color = "var(--danger-color)";
+            } else {
+                statusText.textContent = `เลือกแล้ว: ${selectedPurposes.join(', ')}`;
+                statusText.style.color = "var(--success-color)";
+            }
+        }
+
+        // อัปเดตคำแนะนำ Keyword และคำพ้องความหมายตามหมวดหมู่ที่เลือก (ไม่แสดงคำซ้ำ)
+        function updateKeywordSuggestions() {
+            const container = document.getElementById('auto-keyword-suggestions');
+            container.innerHTML = '';
+
+            if (selectedPurposes.length === 0) return;
+
+            selectedPurposes.forEach(purposeKey => {
+                const categoryData = keywordDatabase[purposeKey];
+                if (!categoryData) return;
+
+                const div = document.createElement('div');
+                div.className = 'category-suggestions';
+                div.innerHTML = `<div class="category-title"><i class="fa-solid fa-tag"></i> หมวด: ${categoryData.name}</div>`;
+
+                const chipGroup = document.createElement('div');
+                chipGroup.className = 'keyword-chip-group';
+
+                const allTerms = [...categoryData.keywords, ...categoryData.synonyms];
+                allTerms.forEach(kw => {
+                    const chip = document.createElement('span');
+                    chip.className = 'suggestion-chip';
+                    chip.textContent = kw;
+                    chip.onclick = () => addKeywordDirectly(kw);
+                    chipGroup.appendChild(chip);
+                });
+
+                div.appendChild(chipGroup);
+                container.appendChild(div);
+            });
+        }
+
+        // 2. ระบบจัดการไฟล์ PDF และ ลิงก์ URL (ป้องกันไฟล์/ลิงก์ซ้ำ)
+        let uploadedFile = null;
+
+        function handleFileSelect(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                if (uploadedFile && uploadedFile.name === file.name && uploadedFile.size === file.size) {
+                    alert('ไฟล์นี้ถูกอัปโหลดไปแล้วครับ');
+                    return;
+                }
+                uploadedFile = file;
+                const fileSizeMB = (uploadedFile.size / (1024 * 1024)).toFixed(2);
+                document.getElementById('file-display-container').innerHTML = `
+                    <div class="file-info-box">
+                        <span><i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i> ${uploadedFile.name} (${fileSizeMB} MB)</span>
+                        <div class="file-actions">
+                            <button type="button" onclick="removeFile()" title="ลบไฟล์"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function removeFile() {
+            uploadedFile = null;
+            document.getElementById('file-display-container').innerHTML = '';
+            document.getElementById('pdf-input').value = '';
+        }
+
+        let urlList = [];
+
+        function addUrlLink() {
+            const urlInput = document.getElementById('url-input-field');
+            const urlVal = urlInput.value.trim();
+            if (!urlVal) return;
+
+            if (!urlVal.startsWith('http://') && !urlVal.startsWith('https://')) {
+                alert('กรุณากรอกลิงก์ให้ถูกต้อง (ต้องขึ้นต้นด้วย http:// หรือ https://)');
+                return;
+            }
+
+            if (urlList.includes(urlVal)) {
+                alert('ลิงก์นี้ถูกเพิ่มไปแล้ว');
+                return;
+            }
+
+            urlList.push(urlVal);
+            renderUrls();
+            urlInput.value = '';
+        }
+
+        function renderUrls() {
+            const container = document.getElementById('url-list-container');
+            container.innerHTML = '';
+            urlList.forEach((url, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fa-solid fa-link"></i> ${url} <button type="button" onclick="removeUrl(${index})" class="delete-link-btn">&times;</button>`;
+                container.appendChild(li);
+            });
+        }
+
+        function removeUrl(index) {
+            urlList.splice(index, 1);
+            renderUrls();
+        }
+
+        // 3. ระบบคำค้นหา (อย่างน้อย 3 คำ + Tag + ลบได้)
+        let keywordsArray = [];
+
+        function addKeywordDirectly(text) {
+            if (!keywordsArray.includes(text)) {
+                keywordsArray.push(text);
+                renderKeywords();
+            }
+        }
+
+        function addKeywordToList() {
+            const inputField = document.getElementById('keyword-text-input');
+            const val = inputField.value.trim();
+            if (!val) return;
+
+            if (keywordsArray.includes(val)) {
+                alert('มีคำค้นหานี้อยู่แล้ว');
+                return;
+            }
+
+            keywordsArray.push(val);
+            renderKeywords();
+            inputField.value = '';
+        }
+
+        function renderKeywords() {
+            const container = document.getElementById('keyword-tags-container');
+            const countStatus = document.getElementById('keyword-count-status');
+            container.innerHTML = '';
+
+            keywordsArray.forEach((kw, index) => {
+                const span = document.createElement('span');
+                span.className = 'keyword-tag';
+                span.innerHTML = `${kw} <i class="fa-solid fa-xmark" onclick="removeKeyword(${index})"></i>`;
+                container.appendChild(span);
+            });
+
+            if (keywordsArray.length >= 3) {
+                countStatus.innerHTML = `<i class="fa-solid fa-circle-check"></i> เพิ่มคำค้นหาครบ ${keywordsArray.length} คำแล้ว (พร้อมวิเคราะห์)`;
+                countStatus.style.color = "var(--success-color)";
+            } else {
+                countStatus.innerHTML = `*เพิ่มแล้ว ${keywordsArray.length} คำ (ต้องการอย่างน้อย 3 คำ)`;
+                countStatus.style.color = "var(--danger-color)";
+            }
+        }
+
+        function removeKeyword(index) {
+            keywordsArray.splice(index, 1);
+            renderKeywords();
+        }
+
+        // 4. ระบบประมวลผลพร้อม Loading, คำชี้แจง และผลลัพธ์ดีไซน์สวยงาม
+        async function startAnalysis() {
+            const targetUni = document.getElementById('target-uni-input').value.trim();
+            const targetFaculty = document.getElementById('target-faculty-input').value.trim();
+            const targetMajor = document.getElementById('target-major-input').value.trim();
+
+            if (selectedPurposes.length === 0) {
+                alert('กรุณาเลือกและกดยืนยันจุดประสงค์อย่างน้อย 1 ข้อครับ');
+                return;
+            }
+            if (!uploadedFile && urlList.length === 0) {
+                alert('กรุณาอัปโหลดไฟล์ PDF หรือเพิ่มลิงก์เว็บไซต์อย่างน้อย 1 รายการครับ');
+                return;
+            }
+            if (keywordsArray.length < 3) {
+                alert('กรุณากำหนดคำค้นหาอย่างน้อย 3 คำครับ');
+                return;
+            }
+
+            const resultSection = document.getElementById('result-section');
+            const resultContent = document.getElementById('result-content');
+            resultSection.classList.remove('hidden');
+
+            const loadingSteps = [
+                "กำลังอ่านเอกสารและแกะข้อความ (อาจใช้เวลา 10-20 นาทีในบางกรณี)...",
+                "กำลังตรวจสอบเป้าหมาย (มหาวิทยาลัย/คณะ/สาขา)...",
+                "กำลังค้นหาข้อมูลที่สอดคล้องกับจุดประสงค์...",
+                "กำลังให้ AI สรุปผลลัพธ์พร้อมแหล่งอ้างอิง..."
+            ];
+
+            for (let i = 0; i < loadingSteps.length; i++) {
+                resultContent.innerHTML = `
+                    <div class="loading-state" style="padding: 30px; text-align: center;">
+                        <i class="fa-solid fa-spinner fa-spin" style="font-size: 2.5rem; color: var(--primary-color);"></i>
+                        <p style="margin-top: 15px; font-weight: 600; font-size: 1.05rem;">${loadingSteps[i]}</p>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">*หมายเหตุ: การอ่านเอกสารและวิเคราะห์โดย AI อาจต้องรออย่างน้อย 10-20 นาที กรุณารอสักครู่...</p>
+                    </div>
+                `;
+                await new Promise(resolve => setTimeout(resolve, 800));
+            }
+
+            // เตรียมข้อมูลส่งไปหา FastAPI Backend
+            const formData = new FormData();
+
+            const enhancedPurposes = [...selectedPurposes];
+            if (targetUni) enhancedPurposes.push(`มหาวิทยาลัย: ${targetUni}`);
+            if (targetFaculty) enhancedPurposes.push(`คณะ: ${targetFaculty}`);
+            if (targetMajor) enhancedPurposes.push(`สาขา: ${targetMajor}`);
+
+            formData.append('purposes', JSON.stringify(enhancedPurposes));
+            formData.append('keywords', JSON.stringify(keywordsArray));
+
+            if (uploadedFile) {
+                formData.append('file', uploadedFile);
+            }
+            if (urlList.length > 0) {
+                formData.append('urls', JSON.stringify(urlList));
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.detail || 'เกิดข้อผิดพลาดในการประมวลผล');
+                }
+
+                // แสดงผลลัพธ์ด้วย white-space: pre-wrap เพื่อจัดบล็อกบรรทัดให้อ่านง่าย
+                resultContent.innerHTML = `
+                    <div class="success-result">
+                        <div class="ai-result-header">
+                            <i class="fa-solid fa-circle-check" style="font-size: 1.3rem;"></i>
+                            <div>
+                                <div style="font-size: 1rem; font-weight: 600;">วิเคราะห์ข้อมูลสำเร็จ!</div>
+                                <div style="font-size: 0.8rem; opacity: 0.9;">${data.source_type === 'pdf' ? 'แหล่งข้อมูล: ไฟล์ PDF (อ่านไป ' + data.pages_read.length + ' หน้า)' : 'แหล่งข้อมูล: ลิงก์เว็บไซต์'}</div>
+                            </div>
+                        </div>
+                        <div class="ai-answer-box" style="white-space: pre-wrap;">
+                            ${data.analysis_result}
+                        </div>
+                    </div>
+                `;
+
+            } catch (error) {
+                resultContent.innerHTML = `
+                    <div class="error-result">
+                        <p style="font-weight: 600; color: #dc2626;"><i class="fa-solid fa-triangle-exclamation"></i> เกิดข้อผิดพลาด: ${error.message}</p>
+                        <p style="font-weight: 600; margin-top: 10px; color: #991b1b;">💡 คำแนะนำ:</p>
+                        <p style="font-size: 0.9rem; color: #475569; margin-top: 4px; line-height: 1.5;">
+                            หากขึ้นข้อผิดพลาดในลักษณะนี้ (เช่น 503 Service Unavailable) แสดงว่าโมเดล AI ในขณะนี้มีผู้ใช้งานจำนวนมาก กรุณากดปุ่มวิเคราะห์ใหม่อีกครั้ง หรือลองออกเข้าหน้าเว็บใหม่อีกรอบครับ
+                        </p>
+                        <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 10px;">*ตรวจสอบให้แน่ใจว่ารัน Backend ผ่าน Uvicorn อยู่ที่พอร์ต 8000 แล้ว</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+
+</html>
